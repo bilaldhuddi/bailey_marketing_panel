@@ -33,7 +33,7 @@ class MessageTemplate(models.Model):
 
 
 class Country(models.Model):
-    country_name = models.CharField(max_length=255, unique=True)
+    country_name = models.CharField(max_length=50, unique=True)
     google_url = models.URLField(default='www.google.com')  # Manually define the default value
     intl_country_code = models.CharField(max_length=2)
     country_code = models.CharField(max_length=3)
@@ -52,38 +52,39 @@ class City(models.Model):
 
 
 class PrimaryContact(models.Model):
-    name = models.CharField(max_length=300)
-    contact_type = models.CharField(max_length=255, null=True, blank=True)
-    address = models.TextField(null=True, blank=True)
+    name = models.CharField(max_length=255)
+    contact_type = models.CharField(max_length=255)
+    address = models.TextField()
     phone = models.CharField(max_length=20)
     phone_source = models.CharField(max_length=20, default='search')
-    website = models.URLField(null=True, blank=True)
-    message = models.TextField(null=True, blank=True)
+    website = models.URLField(max_length=150)
+    message = models.TextField()
     status = models.CharField(max_length=50, default="ready")
     message_status = models.CharField(max_length=20, default='Default')
 
 
 class WebPageTemp(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True)
-    website_link = models.URLField(blank=True, null=True)
-    page_link = models.URLField(blank=True, null=True)
-    Sub_Heading = models.JSONField(blank=True, null=True)
+    title = models.CharField(max_length=150)
+    website_link = models.URLField()
+    page_link = models.URLField()
+    Sub_Heading = models.JSONField()
 
     def __str__(self):
         return f'Title: {self.title}, Website Link: {self.website_link}, Sub Heading: {self.Sub_Heading}'
 
 
 class FacebookPageTemp(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True)
-    page_link = models.URLField(blank=True, null=True)
-    source = models.CharField(max_length=255, null=True)  # Set the default source to 'Facebook'
+    title = models.CharField(max_length=150)
+    page_link = models.URLField()
+    source = models.CharField(max_length=50,
+                              default='search')
 
     def __str__(self):
         return f'Title: {self.title}, Page Link: {self.page_link}, Source: {self.source}'
 
 
 class MessangerPrimary(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=150)
     messenger_link = models.URLField(unique=True)
     source = models.CharField(max_length=20, default='search')
     message = models.TextField()

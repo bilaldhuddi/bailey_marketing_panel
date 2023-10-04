@@ -2,6 +2,8 @@ from django.contrib import admin
 
 from django.contrib.admin import AdminSite
 
+from gmcapp.models import MessageTemplate
+
 
 class CustomAdminSite(AdminSite):
     site_header = 'Custom Admin Panel'  # Customize the admin panel header

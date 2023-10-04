@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GMC LLC - Automation</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+           <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    </head>
+  <body>
+
+
+
+    <input type="checkbox" id="check"/>
+    <header>
+      <label for="check">
+        <i class="fas fa-bars" id="sidebar_btn"></i>
+      </label>
+      <div class="left_area">
+        <h3>BAILEY <span>Digi Data</span></h3>
+      </div>
+
+      <div class="right_area">
+        <a href="{% url 'logout' %}" class="logout_btn">Logout</a>
+      </div>
+    </header>
+    <div class="sidebar">
+      <div class="profile-div">
+        <img src="\static\Bailey_logo.png" class="profile_image" alt=""/>
+        <h4>BAILEY</h4>
+      </div>
+    <a href="{% url 'dashboard' %}" class="{% if request.path == '/' %}active{% endif %}">
+    <i class="fas fa-desktop"></i>
+    <span>Dashboard</span>
+        </a>
+    <a href="{% url 'research' %}" class="{% if request.path == '/research/' %}active{% endif %}">
+    <i class="fas fa-phone"></i>
+    <span>Find Contacts</span>
+    </a>
+<a href="{% url 'web_scraping' %}" class="{% if request.path == '/web_scraping/' %}active{% endif %}">
+    <i class="fas fa-search"></i>
+    <span>Research</span>
+</a>
+
+<a href="{% url 'messaging_automation' %}" class="{% if request.path == '/messaging_automation/' %}active{% endif %}">
+    <i class="fas fa-paper-plane"></i>
+    <span>Send Messages</span>
+</a>
+
+<a href="{% url 'settings' %}" class="{% if request.path == '/settings/' %}active{% endif %}">
+    <i class="fas fa-sliders-h"></i>
+    <span>Settings</span>
+</a>
+
+</div>
+
+           {% block content %}<div class="content"></div>{% endblock %}
+
+
+<script>
+  // Function to show the custom toast with a message (error or success)
+function showToast(message, type) {
+    const customToast = document.getElementById('custom-toast');
+    const customToastMessage = document.getElementById('custom-toast-message');
+
+    customToastMessage.textContent = message;
+
+    // Set a custom class based on the type (error or success)
+    if (type === 'error') {
+        customToast.classList.add('error-toast');
+    } else if (type === 'success') {
+        customToast.classList.add('success-toast');
+    }
+
+    // Show the toast
+    customToast.style.display = 'block';
+
+    // Automatically hide the toast after a few seconds (adjust the timeout as needed)
+    setTimeout(() => {
+        hideToast();
+    }, 5000);
+}
+
+// Function to hide the custom toast
+function hideToast() {
+    const customToast = document.getElementById('custom-toast');
+
+    // Remove custom classes and hide the toast
+    customToast.classList.remove('error-toast', 'success-toast');
+    customToast.style.display = 'none';
+}
+
+// Close button click event to manually hide the toast
+const customToastCloseButton = document.getElementById('custom-toast-close');
+customToastCloseButton.addEventListener('click', () => {
+    hideToast();
+});
+
+
+</script>
+  </body>
+</html>

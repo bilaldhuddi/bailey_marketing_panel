@@ -1,0 +1,384 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'web_scraping.css' %}">
+<div id="space"></div>
+<div class="loading-area">
+    <div class="loader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+    <div class="auto-research-container">
+        <h2>Find Pages</h2>
+        <form method="post" action="{% url 'web_scraping' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" id="query" name="query" class="form-control" placeholder="eg. Dental Clinics" required>
+                    <div class="input-group-append">
+                        <select id="search-type" name="search_type" class="form-control">
+                            <option value="facebook">FB Pages</option>
+                            <option value="web">Web Pages</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="dropdowns-group">
+            <div class="form-group">
+                <select id="country" name="country" class="form-control select-dropdown" required>
+                    <option value="" disabled selected>Select a country</option>
+                    {% for country in countries %}
+                        <option value="{{ country.country_name }}">{{ country.country_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <select id="city" name="city" class="form-control select-dropdown" required>
+                    <option value="" disabled selected>Select a city</option>
+                    {% for city in cities %}
+                        <option value="{{ city.city_name }}">{{ city.city_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="find-pages-button">Find Pages</button>
+         </div>
+        </form>
+        </div>
+<!-- Your HTML Structure -->
+      {% if webdata %}
+<div class = "table_card">
+    <p>{{ web_data_temp|length }} Web pages have been found.</p>
+<div class="web-table">
+
+ <table id="web-data-table" class="custom-table">
+    <button class="export-button" data-id="{{ result.id }}" data-table-id="web-data-table" style="display: none;">Export Selected</button>
+
+    <thead>
+        <tr>
+            <th>Select</th>
+            <th>SNO.</th>
+            <th>Title</th>
+            <th>Website</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in web_data_temp %}
+        <tr data-id="{{ result.id }}">
+            <td><input type="checkbox" class="select-row" data-id="{{ result.id }}"></td>
+            <td><span data-id="{{ result.id }}" data-field="id">{{ forloop.counter }}</span></td>
+            <td><span class="editable" data-field="title"><a href ='{{ result.page_link }}' target="_blank">{{ result.title }}</a></span></td>
+            <td><span class="editable" data-field="website_link" id="website-link2" >{{ result.website_link }}</span></td>
+            <td>
+                <button class="edit-button" data-id="{{ result.id }}">Edit</button>
+                <button class="save-button" data-id="{{ result.id }}" style="display: none;">Save</button>
+<button class="delete-button" data-id="{{ result.id }}" data-table-id="web-data-table" onclick="confirmDelete({{ result.id }})">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</div> </div>
+    {% endif %}
+
+  {% if fbdata %}
+<div class = "table_card">
+    <p>{{ fb_data_temp|length }} Facebook Pages have been found.</p>
+<div class="fb-table">
+ <table id="facebook-data-table" class="custom-table">
+
+     <button class="export-button" data-id="{{ result.id }}" data-table-id="facebook-data-table" style="display: none;">Export Selected</button>
+    <thead>
+        <tr>
+            <th>Select</th>
+            <th>SNO.</th>
+            <th>Title</th>
+            <th>Page Link</th>
+            <th>Source</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in fb_data_temp %}
+        <tr data-id="{{ result.id }}">
+            <td><input type="checkbox" class="select-row" data-id="{{ result.id }}"></td>
+            <td><span data-id="{{ result.id }}" data-field="id">{{ forloop.counter }}</span></td>
+            <td><span class="editable" data-field="title">{{ result.title }}</span></td>
+            <td><span class="editable" id="website-link" data-field="website_link"><a href ='{{ result.page_link }}' target="_blank">{{ result.page_link}}</a></span></td>
+             <td><span>{{ result.source }}</span></td>
+            <td>
+                <button class="edit-button" data-id="{{ result.id }}">Edit</button>
+                <button class="save-button" data-id="{{ result.id }}" style="display: none;">Save</button>
+<button class="delete-button" data-id="{{ result.id }}" data-table-id="facebook-data-table" onclick="confirmDelete({{ result.id }})">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</div>
+    <button type="submit" class="btn btn-primary" onclick="createMessenger()">Create Messanger Contacts</button>
+        {% endif %}
+
+    <script>
+
+  {% if webdata %}
+       $('.loading-area').removeClass('active');
+   {% endif %}
+
+    {% if fbdata %}
+      $('.loading-area').removeClass('active');
+        {% endif %}
+
+     {% if error %}
+          $('.loading-area').removeClass('active');
+              showToast("{{ error }}", 'error');
+            {% endif %}
+
+
+    </script>
+
+    <script>
+    $(document).ready(function () {
+        // Function to check if any checkboxes are selected
+        function areAnyCheckboxesSelected() {
+            return $('.select-row:checked').length > 0;
+        }
+
+        // Toggle the visibility of the "Export" button
+        function toggleExportButtonVisibility() {
+            if (areAnyCheckboxesSelected()) {
+                $('.export-button').show();
+            } else {
+                $('.export-button').hide();
+            }
+        }
+
+        // When a checkbox is clicked, check the state and update the button visibility
+        $('.select-row').on('click', function () {
+            toggleExportButtonVisibility();
+        });
+
+        // Edit button click handler
+        $('.edit-button').on('click', function () {
+            var row = $(this).closest('tr');
+            var tableId = $(this).closest("table").attr("id");
+            row.find('.editable').attr('contenteditable', 'true');
+            row.find('.edit-button').hide();
+            row.find('.save-button').show();
+        });
+
+        // Save button click handler
+        $('.save-button').on('click', function () {
+            $('.loading-area').addClass('active');
+            var row = $(this).closest('tr');
+            var tableId = $(this).closest("table").attr("id");
+            var id = row.data('id');
+            var title = row.find('.editable[data-field="title"]').text();
+            var website_link = row.find('.editable[data-field="website_link"]').text();
+
+            // Get the CSRF token
+            var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+            $.ajax({
+                url: '/web_scraping/edit-record/', // Replace with your actual URL
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: csrfToken, // Include the CSRF token
+                    table_id: tableId,
+                    id: id,
+                    title: title,
+                    website_link: website_link
+                },
+                success: function (data) {
+                    if (data.success) {
+                        row.find('.editable').attr('contenteditable', 'false');
+                        row.find('.edit-button').show();
+                        row.find('.save-button').hide();
+                        $('.loading-area').removeClass('active');
+                    }
+                },
+                error: function () {
+                    // Handle AJAX error
+
+                }
+            });
+        });
+    });
+
+    // Delete button click handler
+$('.delete-button').on('click', function () {
+    $('.loading-area').addClass('active');
+    var recordId = $(this).data('id');
+    var tableId = $(this).data('table-id'); // Read the data-table-id attribute
+
+    // Show a confirmation dialog
+    if (confirm('Are you sure you want to delete this record?')) {
+        // Get the CSRF token
+        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+        // Send AJAX request for deletion
+        $.ajax({
+            url: '/web_scraping/delete-record/', // Update the URL
+            method: 'POST',
+            data: {
+                csrfmiddlewaretoken: csrfToken,
+                table_id: tableId, // Use the captured tableId
+                id: recordId
+            },
+            success: function (data) {
+                if (data.success) {
+                    // If record is successfully deleted, remove the row from the table
+                    $('tr[data-id="' + recordId + '"]').remove();
+                     $('.loading-area').removeClass('active');
+                }
+            },
+            error: function () {
+                // Handle AJAX error
+                                $('.loading-area').removeClass('active');
+            }
+        });
+    }
+});
+
+  $('.export-button').on('click', function () {
+    var selectedIds = $('.select-row:checked').map(function () {
+        return $(this).data('id');
+    }).get();
+     $('.loading-area').addClass('active');
+    var tableId = $(this).data("table-id");
+    // Get the CSRF token from the template
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+
+    // Send the selected IDs to the server
+    $.ajax({
+        url: '/web_scraping/export-selected-records/',
+        method: 'POST',
+        data: {
+            csrfmiddlewaretoken: csrfToken,
+            table_id: tableId,
+            selected_ids: selectedIds
+        },
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function (data) {
+            var url = window.URL.createObjectURL(data);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'selected_records.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            $('.loading-area').removeClass('active');
+        },
+        error: function () {
+            // Handle AJAX error
+          $('.loading-area').removeClass('active');
+        }
+    });
+});
+
+</script>
+
+<script>
+function createMessenger() {
+    // Get the CSRF token from the cookie (Django sets it in cookies by default)
+    var csrftoken = getCookie('csrftoken');
+            $('.loading-area').addClass('active');
+    // Send an AJAX request to trigger the server-side contact creation
+    $.ajax({
+        url: '/create_messenger_contact/',  // URL for the Django view
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken  // Include the CSRF token in the request headers
+        },
+        data: {
+            // Include any data needed for contact creation here
+            // For example, you can send selected Facebook page links
+        },
+        success: function (response) {
+            if (response.success) {
+                // Display a success message
+                $('.loading-area').removeClass('active');
+                 showToast('Messenger contacts created successfully', 'success');
+
+            } else {
+                // Handle the case where contact creation fails
+                $('.loading-area').removeClass('active');
+                  showToast('Some records were not added to the database because they already exist in the database.', 'error');
+            }
+        },
+        error: function () {
+            // Handle AJAX request errors
+             $('.loading-area').removeClass('active');
+        }
+    });
+}
+
+// Function to retrieve the CSRF token from cookies
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+    <script>
+      $(document).ready(function () {
+    $('#find-pages-button').on('click', function () {
+        // Show loading container when the button is clicked
+        $('.loading-area').addClass('active');
+
+        $.ajax({
+            url: '{% url "web_scraping" %}',  // Update with your URL
+            method: 'POST',
+            data: {
+                query: $('#query').val(),
+                search_type: $('#search-type').val(),
+                country: $('#country').val(),
+                city: $('#city').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function (response) {
+                // Handle the response as needed
+            },
+            error: function (error) {
+                // Handle errors
+                console.log(error);
+
+            },
+            complete: function () {
+                // Hide loading container when the request is complete (success or error)
+            }
+        });
+    });
+});
+
+
+    </script>
+
+    </div>
+{% endblock %}

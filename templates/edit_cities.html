@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'dashboard.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="container admin-content">
+    <div id="space"></div>
+    <div class="table_card">
+        <h2>Edit Cities</h2>
+
+        <table id="cities-table" class="custom-table">
+                 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+            <thead>
+                <tr>
+                    <th>SNo.</th>
+                    <th>Cities</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for city in cities %}
+                <tr data-id="{{ city.id }}">
+                    <td><span data-id="{{ city.id }}" data-field="id">{{ forloop.counter }}</span></td>
+                    <td><span class="editable" data-field="city_name">{{ city.city_name }}</span></td>
+                    <td>
+                        <button class="edit-button" data-id="{{ city.id }}">Edit</button>
+                        <button class="save-button" data-id="{{ city.id }}" style="display: none;">Save</button>
+                        <button class="delete-button" data-id="{{ city.id }}">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Edit button click handler
+    $('.edit-button').on('click', function () {
+        var row = $(this).closest('tr');
+        var tableId = $(this).closest("table").attr("id");
+        row.find('.editable').attr('contenteditable', 'true');
+        row.find('.edit-button').hide();
+        row.find('.save-button').show();
+
+    });
+
+    // Save button click handler
+    $('.save-button').on('click', function () {
+        var row = $(this).closest('tr');
+        var id = row.data('id');
+        var city_name = row.find('.editable[data-field="city_name"]').text();
+        var tableId = $(this).closest("table").attr("id");
+
+
+        // Get the CSRF token
+        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+        console.log('CSRF Token:', csrfToken);
+
+        $.ajax({
+            url: '/web_scraping/edit-record/', // Replace with your actual URL
+            method: 'POST',
+            data: {
+                csrfmiddlewaretoken: csrfToken,
+                // Include the CSRF token
+                table_id: tableId,
+                id: id,
+                city_name: city_name,
+            },
+            success: function (data) {
+                if (data.success) {
+                    row.find('.editable').attr('contenteditable', 'false');
+                    row.find('.edit-button').show();
+                    row.find('.save-button').hide();
+                    showToast('The city name has been edited successfully..', 'success');
+                }
+            },
+            error: function () {
+                 showToast('An unexpected error occurred.', 'error');
+            }
+        });
+    });
+
+    // Delete button click handler
+    $('.delete-button').on('click', function () {
+        var recordId = $(this).data('id');
+        var tableId = $(this).closest("table").attr("id");
+
+
+        // Show a confirmation dialog
+        if (confirm('Are you sure you want to delete this record?')) {
+            // Get the CSRF token
+            var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+            // Send AJAX request for deletion
+            $.ajax({
+                url: '/web_scraping/delete-record/', // Update the URL
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: csrfToken,
+                    table_id: tableId,
+                    id: recordId
+                },
+                success: function (data) {
+                    if (data.success) {
+                        // If record is successfully deleted, remove the row from the table
+                        $('tr[data-id="' + recordId + '"]').remove();
+                        showToast('The city has been deleted successfully.', 'success');
+                    }
+                },
+                error: function () {
+                 showToast('An unexpected error occurred.', 'error');
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock %}

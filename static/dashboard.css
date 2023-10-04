@@ -1,0 +1,240 @@
+     #space{
+  height: 90px;
+}
+body, html {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #333; /* Dark background color */
+    color: #fff; /* Light text color */
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.divider {
+    border-top: 1px solid #E0E0E0;
+}
+
+.card {
+    background-color: #444; /* Dark card background color */
+    color: #fff; /* Light card text color */
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.waves-effect {
+    background-color: #00acc1; /* Dark button background color */
+    color: #fff; /* Light button text color */
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.waves-effect:hover {
+    background-color: #0091a1;
+}
+
+label {
+    font-weight: bold;
+    color: #fff;
+    text-align: left;
+    padding-bottom: 10px;
+}
+
+
+
+
+/* Additional styles for the charts and chart selection */
+.chart-container {
+    background-color: #444;
+    color: #fff;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    text-align: center;
+    display: inline-block;
+}
+
+.chart-selection {
+    color: #fff;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    text-align: center;
+    float: right;
+}
+
+.chart-container h4,
+.chart-selection h4 {
+    color: #fff;
+}
+
+/* Dark mode styles */
+body {
+    background-color: #333; /* Dark background color */
+    color: #fff; /* Light text color */
+}
+
+.card {
+    background-color: #444; /* Dark card background color */
+    color: #fff; /* Light card text color */
+}
+
+.waves-effect {
+    background-color: #00acc1; /* Dark button background color */
+    color: #fff; /* Light button text color */
+}
+
+.waves-effect:hover {
+    background-color: #0091a1;
+}
+
+.messanger-table, .whatsapp-table {
+    max-height: 500px;
+        max-width: 750px;
+    overflow: auto; /* Add a scrollbar if the content overflows the max height */
+                display: inline-block;
+
+}
+
+
+body, table {
+    font-family: Arial, sans-serif;
+    margin-bottom: 250px;
+    max-height: 300px;
+}
+
+/* Table Styles */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    max-height: 400px;
+
+}
+
+.custom-table th, .custom-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #fff;
+    margin: 20px;
+}
+
+.custom-table th {
+    background-color: #FFB340;
+    color: #333;
+}
+
+.table_card{
+    background-color: #444;
+        border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.01);
+    padding: 30px 15px 50px 15px;
+    text-align: center;
+    max-width: 800px;
+        margin: 0 auto;
+
+
+}
+
+
+.custom-table tr:hover {
+    background-color: #444;
+}
+
+/* Checkbox Styles */
+.select-row {
+    cursor: pointer;
+}
+
+/* Button Styles */
+.edit-button, .delete-button, .export-button, .save-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #3498db;
+    color: #fff;
+    margin-right: 5px;
+}
+
+
+.save-button {
+    background-color: #2ecc71;
+    color: #fff;
+    margin-right: 5px;
+
+}
+
+
+.delete-button {
+    background-color: #e74c3c;
+    color: #fff;
+    margin-right: 5px;
+    margin: 5px;
+}
+
+.export-button {
+    background-color: #2ecc71;
+    color: #fff;
+    float: left;
+    margin: 10px;
+}
+
+/* Button Hover Effect */
+.edit-button:hover, .delete-button:hover, .export-button:hover, .save-button:hover {
+    opacity: 0.8;
+}
+     #website-link {
+            max-width: 200px; /* Adjust the maximum width as needed */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+
+#website-link {
+    text-decoration: none; /* Remove underlines from truncated links */
+    color: #007bff; /* Change link color as needed */
+}
+     #website-link2 {
+            max-width: 200px; /* Adjust the maximum width as needed */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+
+#website-link2 {
+    text-decoration: none; /* Remove underlines from truncated links */
+    color: #007bff; /* Change link color as needed */
+}
+
+/* Style for link when hovered */
+#website-link:hover {
+    text-decoration: underline; /* Add underline on hover if desired */
+}
+
+
+
+.hide {
+    display: none;
+}

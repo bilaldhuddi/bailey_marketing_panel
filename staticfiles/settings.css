@@ -1,0 +1,128 @@
+
+     #space{
+  height: 90px;
+}
+
+/* Default styles */
+body, html {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+
+}
+
+.divider {
+    border-top: 1px solid #E0E0E0;
+}
+
+.card {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.waves-effect {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #00acc1;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.waves-effect:hover {
+    background-color: #0091a1;
+}
+
+label {
+    font-weight: bold;
+    color: #fff;
+    text-align: left;
+    padding-bottom: 10px;
+}
+
+input[type="text"],
+textarea {
+    width: 98%;
+    float: center;
+    color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color:#333437;
+}
+
+button.btn {
+    background-color: #FFB340;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button.btn:hover {
+    background-color: #fdc632;
+}
+
+.settings-form,
+.message-form {
+    margin-bottom: 10px;
+}
+
+.settings-form .btn,
+.message-form .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.edit-cities-link {
+    text-decoration: none;
+    color: #FFB340;
+    padding: 10px 10px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Style for the edit icon inside the link */
+.edit-cities-link i {
+    margin-right: 5px; /* Add some spacing to the right of the icon */
+}
+
+/* Dark mode styles */
+body {
+    background-color: #333; /* Dark background color */
+    color: #fff; /* Light text color */
+}
+
+.card {
+    background-color: #444; /* Dark card background color */
+    color: #fff; /* Light card text color */
+}
+
+.waves-effect {
+    background-color: #00acc1; /* Dark button background color */
+    color: #fff; /* Light button text color */
+}
+
+.waves-effect:hover {
+    background-color: #0091a1;
+}
+
+/* Additional dark mode styles can be added here */

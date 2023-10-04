@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'send_messages.css' %}">
+
+
+<div id="space"></div>
+
+<div class="loading-area">
+    <div class="loader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+
+<div class="messaging-container">
+
+    <div class="messaging-instructions">
+        <h2>Instructions:</h2>
+        <p>
+            1. Click "Start WhatsApp Automation" wait for Chrome to open, and log in to your WhatsApp via QR code within 45 seconds.<br>
+            2. Select your image before starting the automation to include it in your message.<br>
+            3. Do not close the Chrome window; it will close itself when the task is done.<br>
+        </p>
+    </div>
+    <div class="progress-container">
+        <div class="messaging-progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <div class="progress-info">
+    <h3 class="inline-counts">Total Contacts: <span id="totalContacts">0</span></h3>
+<h3 class="inline-counts">Messages Delivered: <span id="messagesDelivered">0</span></h3>
+<h3 class="inline-counts">failed: <span id="failed">0</span></h3>
+
+        </div>
+    </div>
+    <!-- Image uploader container -->
+
+    <!-- Drag-and-drop area for file upload -->
+<div class="drag-drop-area" id="dragDropArea">
+    <p class="drag-drop-text">Drag & Drop or Select File</p>
+    <!-- Hidden input for drag-and-drop -->
+    <input type="file" id="dragDropInput" accept="image/*">
+      {% csrf_token %}
+
+</div>
+
+    <div class="button-container">
+        <a href="#" class="action-button" id="whatsapp-button" >Start WhatsApp Automation</a>
+        <a href="#" class="action-button" id="messenger-button">Start Messenger Automation</a>
+    </div>
+</div>
+<!-- Add your JavaScript code here -->
+<script>
+$(document).ready(function () {
+    $('#whatsapp-button').on('click', function () {
+        $('.loading-area').addClass('active');
+        // Check if an image file is selected
+        var imageInput = document.getElementById('dragDropInput');
+        var formData = new FormData();  // Initialize formData
+
+        if (imageInput.files.length > 0) {
+            // Image is selected, proceed with the image
+            var imageFile = imageInput.files[0];
+            formData.append('image', imageFile);
+        }
+
+        var csrfToken = "{{ csrf_token }}";
+        var headers = {
+            'X-CSRFToken': csrfToken
+        };
+
+        $.ajax({
+            url: 'start_whatsapp_automation/',  // Replace with the actual URL
+            method: 'POST',
+            data: formData, // Your image data here (or null)
+            headers: headers,  // Include the CSRF token in the headers
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                // Handle success response, update UI with data
+                updateUI(data);
+            },
+            error: function () {
+                // Handle error
+                $('.loading-area').removeClass('active');
+                showToast('An error occurred while starting WhatsApp automation.', 'error');
+            }
+        });
+    });
+
+    // Function to update the UI with response data
+    function updateUI(data) {
+        if (data.success) {
+            // Update total contacts, messages delivered, and fields processed
+            $('#totalContacts').text(data.total_contacts);
+            $('#messagesDelivered').text(data.messages_delivered);
+            $('#failed').text(data.failed);
+             $('.loading-area').removeClass('active');
+
+            // Update the progress bar (if applicable)
+            if (data.total_contacts > 0) {
+                var percentage = (data.messages_delivered / data.total_contacts) * 100;
+                $('#progress').css('width', percentage + '%');
+            }
+
+            // Display a success message or handle other UI updates
+            showToast('WhatsApp automation completed successfully!', 'success');
+                    $('.loading-area').removeClass('active');
+
+        } else {
+            // Handle the case where automation did not start successfully
+            $('.loading-area').removeClass('active');
+            showToast('Failed to start WhatsApp automation.', 'error');
+
+        }
+    }
+});
+
+</script>
+
+<script>
+ $(document).ready(function () {
+    $('#messenger-button').on('click', function () {
+        // Check if an image file is selected
+                $('.loading-area').addClass('active');
+        var imageInput = document.getElementById('dragDropInput');
+        var formData = new FormData();  // Initialize formData
+
+        if (imageInput.files.length > 0) {
+            // Image is selected, proceed with the image
+            var imageFile = imageInput.files[0];
+            formData.append('image', imageFile);
+        }
+
+        var csrfToken = "{{ csrf_token }}";
+        var headers = {
+            'X-CSRFToken': csrfToken
+        };
+
+        $.ajax({
+            url: 'start_messanger_automation/',  // Replace with the actual URL
+            method: 'POST',
+            data: formData, // Your image data here (or null)
+            headers: headers,  // Include the CSRF token in the headers
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                // Handle success response, update UI with data
+                updateUI(data);
+            },
+            error: function () {
+                // Handle error
+                showToast('An error occurred while starting Messanger automation.', 'error');
+                    $('.loading-area').removeClass('active');
+            }
+        });
+    });
+
+    // Function to update the UI with response data
+    function updateUI(data) {
+        if (data.success) {
+            // Update total contacts, messages delivered, and fields processed
+            $('#totalContacts').text(data.total_contacts);
+            $('#messagesDelivered').text(data.messages_delivered);
+            $('#failed').text(data.failed);
+            $('.loading-area').removeClass('active');
+
+            // Update the progress bar (if applicable)
+            if (data.total_contacts > 0) {
+                var percentage = (data.messages_delivered / data.total_contacts) * 100;
+                $('#progress').css('width', percentage + '%');
+            }
+
+            // Display a success message or handle other UI updates
+            $('.loading-area').removeClass('active');
+            showToast('WhatsApp automation completed successfully!', 'success');
+        } else {
+            // Handle the case where automation did not start successfully
+                $('.loading-area').removeClass('active');
+                showToast('Failed to start Messanger automation.', 'error');
+        }
+    }
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,239 @@
+body{
+    margin:0px;
+    padding:0px;
+    font-family:"Roboto",sans-serif;
+  }
+
+  header{
+    position:fixed;
+    background:#1E1F22;
+    padding:20px;
+    width:100%;
+    height:30px;
+  }
+
+  .left_area h3{
+    color:#FF497C;
+    margin:0;
+    text-transform:uppercase;
+    font-size:22px;
+    font-weight:900;
+  }
+
+  .left_area span{
+    color:#FFB340;
+  }
+
+  .logout_btn{
+    padding:5px;
+    background:#FFB340;
+    text-decoration:none;
+    float:right;
+    margin-top:-30px;
+    margin-right:40px;
+    border-radius:2px;
+    font-size:15px;
+    font-weight:600;
+    color:#fff;
+    transition:0.5s;
+    transition-property:background;
+  }
+
+  .logout_btn:hover{
+    background:#fdc632;
+  }
+
+  .profile-div{
+    text-align:center;
+  }
+
+  .sidebar{
+    background:#444;
+    margin-top:70px;
+    padding-top:30px;
+    position:fixed;
+    left:0;
+    width:240px;
+    height:100vh;
+    transition:0.5s;
+    transition-property:left;
+  }
+
+  .sidebar .profile_image{
+    width:120px;
+    height:120px;
+    border-radius:60px;
+    margin-bottom:10px;
+  }
+
+  .sidebar h4{
+    color:#ccc;
+    margin-top:0;
+    margin-bottom:10px;
+  }
+
+  .sidebar a{
+    color:#fff;
+    display:block;
+    width:100%;
+    line-height:60px;
+    text-decoration:none;
+    padding-left:40px;
+    box-sizing:border-box;
+    transition:0.5s;
+    transition-property:background;
+  }
+
+  .sidebar a:hover{
+    background:#FFB340;
+  }
+
+  .sidebar i{
+    padding-right:10px;
+  }
+
+  label #sidebar_btn{
+    z-index:1;
+    color:#fff;
+    position:fixed;
+    cursor:pointer;
+    left:300px;
+    font-size:20px;
+    margin:5px 0px;
+    transition:0.5s;
+    transition-property:color;
+  }
+
+  label #sidebar_btn:hover{
+    color:#FFB340;
+  }
+
+  #check:checked ~ .sidebar{
+    left:-180px;
+  }
+
+  #check:checked ~ .sidebar a span{
+    display:none;
+  }
+
+  #check:checked ~.sidebar a{
+    font-size:20px;
+    margin-left:162px;
+    width:80px;
+  }
+
+  .content{
+    margin-left:350px;
+    background: #333437;
+    transition:0.5s;
+    max-width: 850px;
+  }
+
+  #check:checked ~ .content{
+    margin-left:70px;
+  }
+
+  #check{
+    display:none;
+  }
+
+.loading-area {
+    height: 20px;
+    	display: grid;
+    place-items: center;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease; /* Add a transition for smooth fade */
+    margin-bottom: 20px;
+}
+
+.loading-area.active {
+    opacity: 1; /* Show the loading area */
+}
+.loader{
+    position: fixed;
+
+}
+.loader div {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: animate 1.5s ease-in-out infinite;
+    display: inline-block;
+    margin: 0.5rem;
+}
+
+
+.loader div:nth-child(0) {
+	animation-delay: 0s;
+}
+.loader div:nth-child(1) {
+	animation-delay: 0.2s;
+}
+.loader div:nth-child(2) {
+	animation-delay: 0.4s;
+}
+.loader div:nth-child(3) {
+	animation-delay: 0.6s;
+}
+.loader div:nth-child(4) {
+	animation-delay: 0.8s;
+}
+.loader div:nth-child(5) {
+	animation-delay: 1s;
+}
+.loader div:nth-child(6) {
+	animation-delay: 1.2s;
+}
+.loader div:nth-child(7) {
+	animation-delay: 1.4s;
+}
+@keyframes animate {
+	0%, 100% {
+		transform: scale(0.2);
+		background-color: #CA75AF;
+	}
+	40% {
+		transform: scale(1);
+		background-color:  #FF497C;
+	}
+	50% {
+		transform: scale(1);
+		background-color: #FFB340;
+	}
+
+}
+
+.custom-toast {
+    display: none;
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    border-radius: 4px;
+    padding: 10px 16px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+}
+
+.custom-toast-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.custom-toast-close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 18px;
+    cursor: pointer;
+}
+/* Example CSS to highlight active link */
+.sidebar a.active {
+    background: #FFB340; /* Highlight color for active link */
+    color: #fff; /* Text color for active link */
+    font-weight: bold; /* Make the text bold for active link */
+}

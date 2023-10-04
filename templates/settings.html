@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'settings.css' %}">
+<div class=".dark-mode">
+<div id="space"></div>
+    <div class="container admin-content">
+
+        <div class="admin-content">
+            <div>
+                <div class="card">
+                    <div class="card-content">
+                        <form method="post" action="{% url 'settings' %}">
+                            {% csrf_token %}
+                                 <div class="form-group">
+                {{ serp_form.serp_api_key.label_tag }}
+                {{ serp_form.serp_api_key }}
+            </div>
+                            <div class="divider"></div>
+                            <br>
+                            <div class="right-align">
+                                <button class="waves-effect waves-light btn" id="serp-submit" type="submit">Save API</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="card">
+                    <div class="card-content">
+                        <form method="post" action="{% url 'settings' %}">
+                            {% csrf_token %}
+      <div class="form-group">
+                {{ openai_form.openai_api_key.label_tag }}
+                {{ openai_form.openai_api_key }}
+            </div>
+                            <div class="divider"></div>
+                            <br>
+                            <div class="right-align">
+                                <button class="waves-effect waves-light btn" type="submit">Save API</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+                    <div>
+                <div class="card">
+                    <div class="card-content">
+              <form method="post" action="{% url 'settings' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {{ message_form.as_p }}
+                            </div>
+                            <div class="divider"></div>
+                            <br>
+                            <div class="right-align">
+                                <button class="waves-effect waves-light btn" type="submit">Save Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+<div>
+                <div class="card">
+                    <div class="card-content">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="cities_data">Add Cities:</label>
+                                <textarea class="form-control" id="cities_data" name="cities_data" rows="4" placeholder="Enter cities list here"></textarea>
+                            </div>
+                            <div class="divider"></div>
+                            <br>
+                            <div class="right-align">
+                                                          <a href="{% url 'edit_cities' %}" class="edit-cities-link">
+                    <i class="fas fa-edit"></i> Edit Cities List
+                </a>
+                                <button class="waves-effect waves-light btn" type="submit">Add to the list</button>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('#serp-submit').on('click', function(e) {
+        e.preventDefault(); // Prevent the form from submitting
+
+        // Show loading container when the button is clicked
+        $('.loading-area').addClass('active');
+
+        $.ajax({
+            url: '{% url "settings" %}',  // URL for the form action
+            method: 'POST',  // POST request
+            data: {
+            $('#serp-form').serialize(), // Serialize the form data
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+        })
+        .done(function(response) {
+            // Handle the response as needed
+            if (response.success) {
+                alert(response.message); // Display success message
+                // You can add additional logic here, e.g., update the page content
+            } else {
+                alert('Error: ' + response.message); // Display error message
+            }
+        })
+        .fail(function(error) {
+            // Handle errors
+            console.log(error);
+        })
+        .always(function() {
+            // Hide loading container when the request is complete (success or error)
+            $('.loading-area').removeClass('active');
+        });
+    });
+
+
+});
+</script>
+
+    {% endblock %}

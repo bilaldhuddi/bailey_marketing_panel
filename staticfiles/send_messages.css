@@ -1,0 +1,134 @@
+
+#space{
+  height: 80px;
+}
+body {
+    background-color: #333; /* Dark background color */
+    color: #fff; /* Light text color */
+}
+
+.messaging-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    background: #444;
+}
+
+.messaging-header {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.messaging-instructions {
+    margin-bottom: 20px;
+    line-height: 1.5;
+
+}
+
+.messaging-instructions h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.progress-container {
+    margin-bottom: 20px;
+}
+
+.messaging-progress-bar {
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    width: 0;
+    background-color: #007bff;
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-info {
+    font-size: 14px;
+    color: #fff;
+}
+
+.button-container {
+    text-align: center;
+}
+
+.action-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.action-button:hover {
+    background-color: #0056b3;
+}
+/* Custom WhatsApp button style */
+#whatsapp-button {
+    background-color: #25d366; /* WhatsApp brand color */
+    color: #ffffff; /* Text color for contrast */
+    /* Add any other desired styles */
+}
+#whatsapp-button:hover {
+    background-color: #1b9e3d;
+}
+
+    .image-uploader {
+            text-align: center;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px dashed #FFB340;
+            background-color: #f9f9f9;
+        }
+
+        /* Style for the custom upload button */
+
+
+        /* Style for hiding the default file input */
+        #imageInput {
+            display: none;
+        }
+
+        /* Style for the drag-and-drop area */
+        .drag-drop-area {
+            border: 2px dashed #FFB340;
+            padding: 20px;
+            margin: 20px auto;
+            text-align: center;
+            background-color: #333;
+        }
+
+        /* Style for the drag-and-drop text */
+        .drag-drop-text {
+            font-size: 16px;
+            color: #FFB340;
+        }
+
+            .inline-counts {
+        display: inline-block;
+        margin-right: 20px; /* Margin between inline elements, adjust as needed */
+    }
+
+        #totalContacts {
+        color: #3498db;
+    }
+
+    #messagesDelivered {
+        color: #2ecc71;
+    }
+
+    #failed {
+        color: #e74c3c;
+    }
